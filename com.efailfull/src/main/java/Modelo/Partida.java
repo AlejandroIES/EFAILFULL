@@ -18,7 +18,7 @@ import Vista.Mapa;
 import Vista.Menu;
 import Vista.NuevaPartida;
 
-public class Partida extends JFrame {
+public class Partida extends JFrame  {
 
 	public static boolean batallaActiva = false;
 	public static String tipoCasillaActual;
