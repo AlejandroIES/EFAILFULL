@@ -60,7 +60,7 @@ public class ControladorPartida {
 			NuevaPartida.personajeSeleccionado = 1;
 		}
 
-		String sqlPar = "INSERT INTO partidas (IdJugador) VALUES (" + Login.usuario + ")";
+		String sqlPar = "INSERT INTO partidas (IdJugador, Casilla) VALUES (" + Login.usuario + ", 1)";
 
 		try {
 			statement = Conexion.conn.prepareStatement(sqlPar);
@@ -84,11 +84,11 @@ public class ControladorPartida {
 		ajuste(5, statsBase);
 
 		String sqlPJ = "INSERT INTO "
-				+ "PersonajePartida (IdPartida, IdPersonaje, Nombre, Nivel, Energia, EnergiaRestante, Vida, VidaRestante, Ataque, Defensa, Bloqueo, ProbabilidadCritico, DanoCritico) "
+				+ "PersonajePartida (IdPartida, IdPersonaje, Nombre, Nivel, Energia, EnergiaRestante, Vida, VidaRestante, Ataque, Defensa, ProbabilidadCritico, DanoCritico) "
 				+ "VALUES (" + idPartida + ", " + NuevaPartida.personajeSeleccionado + ", \" " + Login.usuarioNombre
 				+ "\", 1, " + datos.get(2) + ", " + datos.get(3) + ", " + Partida.personaje.getVida() + ", "
 				+ Partida.personaje.getVidaRestante() + "" + ", " + Partida.personaje.getAtaque() + ", "
-				+ Partida.personaje.getDefensa() + ", " + datos.get(8) + ", " + datos.get(9) + ", " + datos.get(10)
+				+ Partida.personaje.getDefensa() + ", " + datos.get(9) + ", " + datos.get(10)
 				+ ")";
 
 		boolean partidaCreada = false;
@@ -193,13 +193,34 @@ public class ControladorPartida {
     	Partida.combateTab = new Combate();
     	Partida.panelPartida.add("Combate", Partida.combateTab);
     	Partida.panelPartida.setEnabledAt(2, Partida.batallaActiva); // Deshabilitar la pestaña de Combate
-    	Mapa.continuarButton.setEnabled(!Partida.batallaActiva);
-    	
+    	Partida.mapaTab.avanzarCasilla();
     }
 
 	public static void main(String[] args) {
 		Conexion.conectar();
 		// NuevaPartida.personajeSeleccionado = 1;
 		setupInicial();
+	}
+
+	public static void guardarProgreso() {
+
+		Utilidades.guardarPartida();
+		
+		//TODO: Hay una conversacion pendiente con chatgpt sobre esto
+		
+		//¿Qué más queda?
+		/*
+		 * - Cargar partida
+		 * - Fórmula de daño
+		 * - Meter datos
+		 * - Corregir rutas de imágenes
+		 * - Meter imágenes
+		 * - Corregir métodos como elegir enemigo y las cartas de recompensa
+		 * - Perder
+		 * - Zonas de descanso
+		 * - Subidas de nivel de jugador y enemigos (progresión)
+		 * 
+		 */
+		
 	}
 }

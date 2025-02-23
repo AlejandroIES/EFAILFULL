@@ -1,15 +1,19 @@
 package Modelo;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
 import BDD.Conexion;
 import BDD.Utilidades;
+import Controlador.ControladorPartida;
 import Objetos.Enemigo;
 import Objetos.Personaje;
 import Vista.Cartas;
@@ -55,6 +59,8 @@ public class Partida extends JFrame  {
         mapaTab = new Mapa();
         cartasTab = new Cartas();
         combateTab = new Combate();
+        
+        
 
         // Agregar las pestañas al JTabbedPane
         panelPartida.addTab("Mapa", mapaTab);
@@ -66,6 +72,29 @@ public class Partida extends JFrame  {
         add(panelPartida);
 
         Conexion.conectar();
+        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirm = JOptionPane.showConfirmDialog(
+                    Partida.this, 
+                    "¿Deseas guardar el progreso antes de salir?", 
+                    "Confirmar salida", 
+                    JOptionPane.YES_NO_CANCEL_OPTION
+                );
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    ControladorPartida.guardarProgreso();
+                    dispose();
+                } else if (confirm == JOptionPane.NO_OPTION) {
+                    dispose();
+                } else {
+                    // Si elige "Cancelar" o cierra el cuadro de diálogo, no se cierra la ventana
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
+
         
         // Hacer visible la ventana
         setVisible(true);

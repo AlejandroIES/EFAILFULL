@@ -87,7 +87,7 @@ public class Menu extends JFrame {
 		getContentPane().add(panel);
 
 		ImageIcon iconoOriginal = new ImageIcon(
-				"C:\\Users\\alegu\\eclipse-workspace\\com.efailfull\\src\\main\\resources\\title.jpg");
+				"C:\\Users\\alegu\\git\\repository\\com.efailfull\\src\\main\\resources\\title.jpg");
 
 		// Reescalar la imagen a un nuevo tamaño
 		Image imagenOriginal = iconoOriginal.getImage();

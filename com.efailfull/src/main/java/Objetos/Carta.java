@@ -125,7 +125,7 @@ public class Carta extends JPanel {
 		setLayout(null);
 		setPreferredSize(new Dimension(ancho, alto));
 		imagenFondo = new ImageIcon(
-				"C:\\Users\\alegu\\eclipse-workspace\\com.efailfull\\src\\main\\resources\\cartaBase.png").getImage(); // Cambia
+				"C:\\Users\\alegu\\git\\repository\\com.efailfull\\src\\main\\resources\\cartaBase.png").getImage(); // Cambia
 																														// la
 																														// ruta
 																														// aquí

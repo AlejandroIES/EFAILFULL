@@ -1,5 +1,6 @@
 package BDD;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -14,6 +15,8 @@ import Objetos.Carta;
 import Objetos.Efecto;
 import Objetos.Marca;
 import Objetos.Modificador;
+import Vista.Login;
+import Vista.Mapa;
 
 public class Utilidades {
 
@@ -464,6 +467,67 @@ public class Utilidades {
 
 	}
 
+	public static void incrementarCasilla(int idPartida) {
+	    String sql = "UPDATE Partidas SET casilla = casilla + 1 WHERE Id = ?";
+
+	    try (PreparedStatement stmt = Conexion.conn.prepareStatement(sql)) {
+	        stmt.setInt(1, idPartida);
+	        stmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	public static void guardarPartida() {
+	    String actualizarPartidaSQL = "UPDATE Partidas SET casilla = ? WHERE Id = ?";
+	    String actualizarPersonajeSQL = "UPDATE PersonajePartida SET Nombre = ?, Nivel = ?, Energia = ?, EnergiaRestante = ?, " +
+	            "Vida = ?, VidaRestante = ?, Ataque = ?, Defensa = ?, Bloqueo = ?, ProbabilidadCritico = ?, DanoCritico = ? " +
+	            "WHERE IdPartida = ?";
+	    String borrarMazoSQL = "DELETE FROM Mazos WHERE IdPartida = ?";
+	    String insertarMazoSQL = "INSERT INTO Mazos (IdPartida, IdCarta) VALUES (?, ?)";
+
+	    try (PreparedStatement stmtPartida = Conexion.conn.prepareStatement(actualizarPartidaSQL);
+	         PreparedStatement stmtPersonaje = Conexion.conn.prepareStatement(actualizarPersonajeSQL);
+	         PreparedStatement stmtBorrarMazo = Conexion.conn.prepareStatement(borrarMazoSQL);
+	         PreparedStatement stmtInsertarMazo = Conexion.conn.prepareStatement(insertarMazoSQL)) {
+
+	        // Actualizar la casilla en la Partida
+	        stmtPartida.setInt(1, Mapa.casilla);
+	        stmtPartida.setInt(2, ControladorPartida.idPartida);
+	        stmtPartida.executeUpdate();
+
+	        // Actualizar datos del personaje
+	        stmtPersonaje.setString(1, Login.usuarioNombre);
+	        stmtPersonaje.setInt(2, Partida.getPersonaje().getNivel());
+	        stmtPersonaje.setInt(3, Partida.getPersonaje().getEnergia());
+	        stmtPersonaje.setInt(4, Partida.getPersonaje().getEnergiaRestante());
+	        stmtPersonaje.setInt(5, Partida.getPersonaje().getVida());
+	        stmtPersonaje.setInt(6, Partida.getPersonaje().getVidaRestante());
+	        stmtPersonaje.setInt(7, Partida.getPersonaje().getAtaque());
+	        stmtPersonaje.setInt(8, Partida.getPersonaje().getDefensa());
+	        stmtPersonaje.setInt(9, Partida.getPersonaje().getBloqueo());
+	        stmtPersonaje.setBigDecimal(10, BigDecimal.valueOf(Partida.getPersonaje().getProbabilidadCritico()));
+	        stmtPersonaje.setBigDecimal(11, BigDecimal.valueOf(Partida.getPersonaje().getDanoCritico()));
+	        stmtPersonaje.setInt(12, ControladorPartida.idPartida);
+	        stmtPersonaje.executeUpdate();
+
+	        // Borrar el mazo actual
+	        stmtBorrarMazo.setInt(1, ControladorPartida.idPartida);
+	        stmtBorrarMazo.executeUpdate();
+
+	        // Insertar las cartas del mazo actual
+	        for (String idCarta : Partida.mazo) {
+	            stmtInsertarMazo.setInt(1, ControladorPartida.idPartida);
+	            stmtInsertarMazo.setInt(2, Integer.parseInt(idCarta));
+	            stmtInsertarMazo.executeUpdate();
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
 	public static void main(String[] args) {
 		ControladorPartida.setupInicial();
 	}

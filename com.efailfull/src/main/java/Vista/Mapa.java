@@ -3,13 +3,17 @@ package Vista;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;  // Importar la clase JButton
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import BDD.Conexion;
+import BDD.Utilidades;
 import Controlador.ControladorCombate;
+import Controlador.ControladorPartida;
 import Modelo.Partida;
 
 public class Mapa extends JPanel {
@@ -26,8 +30,10 @@ public class Mapa extends JPanel {
     public static int jugadorWidth;
     public static Image jugadorEscalado;
     public static JButton continuarButton;
+    public static Mapa instanciaMapa;
 
     public Mapa() {
+    	instanciaMapa=this;
         setLayout(null); // Usar layout nulo para colocar componentes en posiciones específicas
 
         // Dimensiones del panel
@@ -41,7 +47,7 @@ public class Mapa extends JPanel {
         int mapaY = (panelHeight - mapaHeight) / 2; // Centrar verticalmente
 
         // Cargar la imagen del mapa
-        ImageIcon mapaIcon = new ImageIcon("C:\\Users\\alegu\\eclipse-workspace\\com.efailfull\\src\\main\\resources\\Mapa.png");
+        ImageIcon mapaIcon = new ImageIcon("C:\\Users\\alegu\\git\\repository\\com.efailfull\\src\\main\\resources\\Mapa.png");
         mapaLabel = new JLabel(mapaIcon);
         mapaLabel.setBounds(mapaX, mapaY, mapaWidth, mapaHeight);
 
@@ -54,7 +60,7 @@ public class Mapa extends JPanel {
         add(mapaLabel);
 
         // Crear y agregar el icono del jugador
-        ImageIcon jugadorIcon = new ImageIcon("C:\\Users\\alegu\\eclipse-workspace\\com.efailfull\\src\\main\\resources\\Circulo_Jugador.png");
+        ImageIcon jugadorIcon = new ImageIcon("C:\\Users\\alegu\\git\\repository\\com.efailfull\\src\\main\\resources\\Circulo_Jugador.png");
         Image jugadorImage = jugadorIcon.getImage();
         Image jugadorEscalado = jugadorImage.getScaledInstance(panelWidth * 1 / 12, panelHeight * 1 / 12, Image.SCALE_SMOOTH);
         
@@ -114,6 +120,9 @@ public class Mapa extends JPanel {
     }
 
     public void avanzarCasilla() {
+    	casilla++;
+        Utilidades.incrementarCasilla(ControladorPartida.idPartida);
+    	continuarButton.setEnabled(true);
         if (casilla % 5 == 0) {
             jugadorY += Menu.alto * 1 / 8 + Menu.alto * 3 / 40;
             if (casilla != 5)

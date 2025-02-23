@@ -17,7 +17,7 @@ public class Recompensa extends JDialog {
     private int idSeleccionado;
 
     public Recompensa(JFrame parent, List<Integer> opciones) {
-        super(parent, "Selecciona tu recompensa", true);
+        super(parent, "¡Victoria! ¡Selecciona tu recompensa!", true);
         setSize(600, 300);
         setLayout(new BorderLayout());
 
@@ -32,7 +32,7 @@ public class Recompensa extends JDialog {
             carta.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent evt) {
-                	idSeleccionado = id;
+                    idSeleccionado = id;
                     seleccionarCarta(carta);
                 }
             });
@@ -46,14 +46,24 @@ public class Recompensa extends JDialog {
         btnConfirmar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	Partida.mazo.add(idSeleccionado + "");
+                Partida.mazo.add(idSeleccionado + "");
                 dispose();
             }
         });
 
-        // Panel inferior para el botón
+        // Botón "Omitir" que siempre está activado
+        JButton btnOmitir = new JButton("Omitir");
+        btnOmitir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Simplemente cierra la ventana sin añadir nada
+            }
+        });
+
+        // Panel inferior para los botones
         JPanel panelBoton = new JPanel();
         panelBoton.add(btnConfirmar);
+        panelBoton.add(btnOmitir); // Se agrega el botón de omitir
 
         // Agregar componentes a la ventana
         add(panelCartas, BorderLayout.CENTER);
@@ -66,7 +76,7 @@ public class Recompensa extends JDialog {
         if (cartaSeleccionada != null) {
             cartaSeleccionada.setBorder(null); // Quita el borde de la anterior selección
         }
-        
+
         cartaSeleccionada = carta;
         cartaSeleccionada.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3)); // Resaltar selección
         btnConfirmar.setEnabled(true); // Activar botón de confirmar

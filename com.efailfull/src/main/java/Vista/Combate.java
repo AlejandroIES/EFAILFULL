@@ -271,7 +271,7 @@ public class Combate extends JPanel {
 		efectosPanel.removeAll();
 
 		for (Efecto efecto : efectos) {
-			String ruta = "C:\\Users\\alegu\\eclipse-workspace\\com.efailfull\\src\\main\\resources\\estados\\";
+			String ruta = "C:\\Users\\alegu\\git\\repository\\com.efailfull\\src\\main\\resources\\estados\\";
 			if (efecto instanceof Modificador) {
 
 				Modificador mod = (Modificador) efecto;

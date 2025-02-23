@@ -371,6 +371,7 @@ public class ControladorCombate {
 		
 		if (enemigo.getVidaRestante() == 0) {
 			victoria();
+			Partida.personaje.setEnergiaRestante(Partida.personaje.getEnergia());
 			cartas.reiniciaMazo();
 			ControladorPartida.terminaCombate();
 			
@@ -456,7 +457,7 @@ public class ControladorCombate {
 
 	private void eleccionAtaque() {
 
-		String ruta = "C:\\Users\\alegu\\eclipse-workspace\\com.efailfull\\src\\main\\resources\\estados\\";
+		String ruta = "C:\\Users\\alegu\\git\\repository\\com.efailfull\\src\\main\\resources\\estados\\";
 
 		siguienteAtaque = new Ataque(Partida.enemigoActual.getAtaques().get(decideAtaque(true)));
 
